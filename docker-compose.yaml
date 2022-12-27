@@ -1,0 +1,29 @@
+version: '3.4'
+
+services:
+  nginx:
+   container_name: dt-front
+   image: nginx:latest
+   restart: always
+   ports:
+     - 80:80
+     - 443:443
+   volumes:
+     - ./nginx/conf.d:/etc/nginx/conf.d
+   depends_on:
+     - app
+   networks:
+     - dt-network
+
+  app:
+    restart: always
+    build: ./app
+    container_name: dt-back
+    ports:
+      - '8080:8080'
+    networks:
+      - dt-network
+
+networks:
+  dt-network:
+    driver: host
